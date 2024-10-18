@@ -4,7 +4,7 @@ namespace FinalProject.Models
 {
     public class Exercises
     {
-        // TEST COMMENT
+        // TEST BRANCH COMMENT
         public string ExerciseID { get; set; } = string.Empty;
         [Required(ErrorMessage ="Please enter a name for the exercise")]
         public string Name { get; set; }
