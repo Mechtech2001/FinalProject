@@ -6,15 +6,13 @@ namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private UserContext context {  get; set; }
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        public HomeController (UserContext ctx) => context = ctx;
 
         public IActionResult Index()
         {
+            
             return View();
         }
 

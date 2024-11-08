@@ -9,24 +9,24 @@ namespace FinalProject.Models
     {
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
-        // public DbSet<Users> Users { get; set; } = null!;
-        DbSet<Exercises> Exercises { get; set; } = null!;
+         public DbSet<User> Users { get; set; } = null!;
+       public DbSet<Exercises> Exercises { get; set; } = null!;
 
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /* Creating many to many relationship between users and exercises group?
-            modelBuilder.Entity<Users>()
+            // Creating many to many relationship between users and exercises group?
+           /* modelBuilder.Entity<User>()
                 .HasMany(u => u.Exercises)
                 .WithMany(e => e.Users)
                 .UsingEntity(j => j.ToTable("UserExercises"));
 
             // Seed data for Users
-            modelBuilder.Entity<Users>().HasData(
-                new Users { UserID = 1, Username = "tate.padilla", Password = "Test1", ExerciseID = "bench", BodyWeight = 220, P4PStrength = 50, Premium = false },
-                new Users { UserID = 2, Username = "tommy.wells", Password = "Test2", ExcerciseRoutine = "squat", BodyWeight = 190, P4PStrength = 50, Premium = false },
-                new Users { UserID = 3, Username = "caden.heidebrink", Password = "Test3", ExcerciseRoutine = "deadlift", BodyWeight = 190, P4PStrength = 50, Premium = false }
+            modelBuilder.Entity<User>().HasData(
+                new User { UserID = 1, Username = "tate.padilla", Password = "Test1", ExerciseID = "bench", BodyWeight = 220, P4PStrength = 50, Premium = false },
+                new User { UserID = 2, Username = "tommy.wells", Password = "Test2", ExcerciseRoutine = "squat", BodyWeight = 190, P4PStrength = 50, Premium = false },
+                new User { UserID = 3, Username = "caden.heidebrink", Password = "Test3", ExcerciseRoutine = "deadlift", BodyWeight = 190, P4PStrength = 50, Premium = false }
             );
             */
 

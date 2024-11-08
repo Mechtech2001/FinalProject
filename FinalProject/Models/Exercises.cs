@@ -12,7 +12,7 @@ namespace FinalProject.Models
         [Required(ErrorMessage ="Please enter a weight for the exercise")]
         public int? Weight { get; set; } 
         [Required(ErrorMessage = "Please enter the amount of reps for the exercise")]
-        public int Reps { get; set; } 
+        public int? Reps { get; set; } 
 
        
     }
