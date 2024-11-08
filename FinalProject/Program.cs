@@ -1,4 +1,13 @@
+using FinalProject.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+// Add EF Core dependency injection, allowing the DbContext objects to be properly passed to controllers.
+builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

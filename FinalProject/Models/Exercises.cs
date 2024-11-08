@@ -6,11 +6,11 @@ namespace FinalProject.Models
     {
         // TEST BRANCH COMMENT
         //Tommy's test comment
-        public int ExerciseID { get; set; } 
-        [Required(ErrorMessage ="Please enter a name for the exercise")]
-        public string Name { get; set; }
+        public string ExerciseID { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Please enter a name for the exercise")]
+        public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage ="Please enter a weight for the exercise")]
-        public int? Weight { get; set; }
+        public int? Weight { get; set; } 
         [Required(ErrorMessage = "Please enter the amount of reps for the exercise")]
         public int Reps { get; set; } 
 
