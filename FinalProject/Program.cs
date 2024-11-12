@@ -3,22 +3,39 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Adding logging
+builder.Logging.AddConsole();
+
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add EF Core dependency injection, allowing the DbContext objects to be properly passed to controllers.
-builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
+// Add EF Core dependency injection
+builder.Services.AddDbContext<UserContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Add session state and cache services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+    options.Cookie.HttpOnly = true; // Secure session cookie
+    options.Cookie.IsEssential = true; // Ensure the session cookie is essential
+    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
+});
+
+// Add MVC service
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -27,6 +44,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Enable session middleware
+app.UseSession();
+
+app.UseAuthentication();  // Enable authentication middleware
 app.UseAuthorization();
 
 app.MapControllerRoute(
