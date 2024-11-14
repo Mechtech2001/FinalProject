@@ -1,0 +1,38 @@
+﻿@model FinalProject.Models.User
+
+<h2>Create User</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BodyWeight"></label>
+        <input asp-for="BodyWeight" class="form-control" />
+        <span asp-validation-for="BodyWeight" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsPremiumUser" class="form-check-input" />
+        <label asp-for="IsPremiumUser" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

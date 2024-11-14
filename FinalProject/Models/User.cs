@@ -7,6 +7,10 @@
         public string Username { get; set; }
         [Required(ErrorMessage = "Please enter a password")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Please confirm your password")]
+        [Compare("Password", ErrorMessage = "The passwords do not match")]
+        public string ConfirmPassword { get; set; }
         public List<Exercises>? ExerciseList { get; set; }
         [Required(ErrorMessage = "Please enter a bodyweight")]
         [Range(1.0, 1000.0)]
