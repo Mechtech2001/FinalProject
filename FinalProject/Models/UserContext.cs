@@ -9,7 +9,7 @@ namespace FinalProject.Models
     {
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
-        // public DbSet<Users> Users { get; set; } = null!;
+        // public DbSet<User> Users { get; set; } = null!;
         DbSet<Exercises> Exercises { get; set; } = null!;
 
         
@@ -24,9 +24,9 @@ namespace FinalProject.Models
 
             // Seed data for Users
             modelBuilder.Entity<Users>().HasData(
-                new Users { UserID = 1, Username = "tate.padilla", Password = "Test1", ExerciseID = "bench", BodyWeight = 220, P4PStrength = 50, Premium = false },
-                new Users { UserID = 2, Username = "tommy.wells", Password = "Test2", ExcerciseRoutine = "squat", BodyWeight = 190, P4PStrength = 50, Premium = false },
-                new Users { UserID = 3, Username = "caden.heidebrink", Password = "Test3", ExcerciseRoutine = "deadlift", BodyWeight = 190, P4PStrength = 50, Premium = false }
+                new Users { UserID = 1, Username = "tate.padilla", Password = "Test1", ExerciseList = new List<Exercises>, BodyWeight = 220, P4PStrength = 50, Premium = false },
+                new Users { UserID = 2, Username = "tommy.wells", Password = "Test2", ExerciseList = new List<Exercises>, BodyWeight = 190, P4PStrength = 50, Premium = false },
+                new Users { UserID = 3, Username = "caden.heidebrink", Password = "Test3", ExerciseList = new List<Exercises>, BodyWeight = 190, P4PStrength = 50, Premium = false }
             );
             */
 
