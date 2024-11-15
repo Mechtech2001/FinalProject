@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace FinalProject.Models
 {
-    public class Exercises
+    public class Exercise
     {
         [Key] // This explicitly sets ExerciseID as the primary key
         public string ExerciseID { get; set; } = string.Empty;
@@ -14,7 +14,7 @@ namespace FinalProject.Models
         [Required(ErrorMessage = "Please enter the amount of reps for the exercise")]
         public int Reps { get; set; }
 
-        public List<Users> Users { get; set; } 
+        public List<User> Users { get; set; } 
 
     }
 }

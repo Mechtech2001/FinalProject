@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace FinalProject.Models
 {
-    public class Users
+    public class User
     {
         [Key] // This explicitly sets ExerciseID as the primary key
         public int UserID { get; set; }
@@ -13,6 +13,6 @@ namespace FinalProject.Models
         public bool Premium { get; set; }
 
         // Collection of exercises
-        public List<Exercises> Exercises { get; set; } = new List<Exercises>();
+        public List<Exercise> Exercises { get; set; } = new List<Exercise>();
     }
 }

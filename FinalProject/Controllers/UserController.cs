@@ -89,7 +89,7 @@ namespace FinalProject.Controllers
         }
         
         [HttpPost]
-        public IActionResult Edit(Users user)
+        public IActionResult Edit(User user)
         {
             if (ModelState.IsValid)
             {
