@@ -1,0 +1,62 @@
+﻿@using FinalProject.Models
+@model ExerciseViewModel
+@{
+    // Get the premium status from session
+    var isPremium = Context.Session.GetString("Premium") == "True";
+
+    // View title for the edit page
+    string title = "Edit Exercises";
+    ViewData["Title"] = title;
+}
+
+<!DOCTYPE
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h2>@ViewBag.Title</h2>
+    <!--Creating the post (Edit) command form.-->
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Exercise.Name" class="form-label">Name</label>
+            <input asp-for="Exercise.Name" class="form-control" />
+            <span asp-validation-for="Exercise.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Exercise.Weight" class="form-label">Weight</label>
+            <input asp-for="Exercise.Weight" class="form-control" />
+            <span asp-validation-for="Exercise.Weight" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Exercise.Reps" class="form-label">Reps</label>
+            <input asp-for="Exercise.Reps" class="form-control" />
+            <span asp-validation-for="Exercise.Reps" class="text-danger"></span>
+        </div>
+
+        <!-- If user is premium (determined from model session state), display P4PStrength -->
+        @if (isPremium && Model.User != null)
+        {
+            <div class="form-group">
+                <label asp-for="User.P4PStrength" class="control-label">P4P Strength</label>
+                <input asp-for="User.P4PStrength" class="form-control" />
+                <span asp-validation-for="User.P4PStrength" class="text-danger"></span>
+            </div>
+        }
+
+        <!--The submit button posts the form to the Edit() action of the current controller (ExerciseController)-->
+        <button type="submit" class="btn btn-primary">Save</button>
+
+        <!--Tag helpers are used to request the Index() action of the Home controller.-->
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Cancel</a>
+    </form>
+
+</body>
+</html>
