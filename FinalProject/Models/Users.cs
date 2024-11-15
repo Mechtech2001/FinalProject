@@ -13,6 +13,6 @@ namespace FinalProject.Models
         public bool Premium { get; set; }
 
         // Collection of exercises
-        public ICollection<Exercises> Exercises { get; set; } = new List<Exercises>();
+        public List<Exercises> Exercises { get; set; } = new List<Exercises>();
     }
 }

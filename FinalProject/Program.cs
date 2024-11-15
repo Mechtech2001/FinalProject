@@ -1,10 +1,13 @@
 using FinalProject.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adding logging
-builder.Logging.AddConsole();
+// Set up logging
+builder.Logging.AddConsole();    // Adds console logging
+builder.Logging.AddDebug();      // (Optional) Adds debug output logging
+builder.Logging.AddEventSourceLogger(); // (Optional) For event tracing
 
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);

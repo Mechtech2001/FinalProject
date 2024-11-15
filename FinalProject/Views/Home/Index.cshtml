@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Users
+@{
     ViewData["Title"] = "Login-in page";
 }
 
@@ -11,9 +12,7 @@
         <input name="password" class="form-control" placeholder="Password" />
         <div class="mb-4">
             <label>
-                <!--Hidden input to submit when unchecked/false-->
-                <input type="hidden" name="isPremium" value="false" />
-                <input name="isPremium" type="checkbox" /> Do you want premium?
+                <input asp-for="Premium" name="Premium" type="checkbox" /> Do you want premium?
             </label>
         </div>
         <button type="submit" class="btn btn-primary">Log in</button>

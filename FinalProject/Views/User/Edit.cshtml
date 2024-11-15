@@ -4,19 +4,20 @@
     // Get the premium status from session
     var isPremium = Context.Session.GetString("Premium") == "True";
 
-    // The ViewBag properties allows the view to work for both Add() and Edit() actions.
-    string title = ViewBag.Action + " Exercises";
+    // View title for the edit page
+    string title = "Edit Exercises";
     ViewData["Title"] = title;
 }
 
-<!DOCTYPE <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+<!DOCTYPE
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    </head>
+</head>
 
-    <body>
+<body>
     <h2>@ViewBag.Title</h2>
     <!--Creating the post (Edit) command form.-->
     <form asp-action="Edit" method="post">
@@ -57,5 +58,5 @@
         <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Cancel</a>
     </form>
 
-    </body>
+</body>
 </html>

@@ -6,61 +6,75 @@ namespace FinalProject.Controllers
 {
     public class UserController : Controller
     {
-
         private UserContext context { get; set; }
         public UserController(UserContext ctx) => context = ctx;
+
         public IActionResult Index()
         {
             return View();
         }
 
-        // Method that allows users to login and stores username & premium status within session state.
-        public IActionResult Login(string username, string password, bool isPremium)
+        // Login method: stores username & premium status within session state
+        public IActionResult Login(string username, string password, bool Premium)
         {
-            // Debugging step: Check if isPremium is correctly received
-            Console.WriteLine($"Received isPremium: {isPremium}");
+            Console.WriteLine("Login attempt received for Username: {0}, Premium: {1}", username, Premium);
 
-            // Query to find first user that matches specified username/password
+            // Find user by username and password
             var user = context.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
 
-            // If user is valid
             if (user != null)
             {
-                // Update the Premium status for the user
-                user.Premium = isPremium;
+                Console.WriteLine("User found: {0}", user.Username);
 
-                // Save changes to the database
-                context.SaveChanges();
-                //DEBUGGING
-                Console.WriteLine($"Premium status updated: {user.Premium}");
+                // Check if the password matches
+                if (user.Password == password)
+                {
+                    Console.WriteLine("Password match successful for {0}", username);
 
-                // Store user info and premium status in session
-                HttpContext.Session.SetString("Username", user.Username);
-                HttpContext.Session.SetString("Premium", isPremium.ToString());
+                    // Store Premium in session
+                    HttpContext.Session.SetString("Premium", Premium.ToString());
+                    Console.WriteLine("Stored Premium status in session: {0}", Premium);
 
-                // DEBUGGING
-                var premiumStatus = HttpContext.Session.GetString("Premium");
-                Console.WriteLine($"Session Premium status: {premiumStatus}");
-
-                // Redirect to Edit view
-                return RedirectToAction("Edit", new { id = user.UserID });
+                    // Redirect to Edit page with user ID
+                    return RedirectToAction("Edit", new { id = user.UserID });
+                }
+                else
+                {
+                    Console.WriteLine("Password mismatch for Username: {0}", username);
+                    return View("Error", "Invalid credentials");
+                }
             }
-
-            ModelState.AddModelError("", "Invalid username or password.");
-            return View("Home/Index"); // Return to login page if failed
+            else
+            {
+                Console.WriteLine("User not found: {0}", username);
+                return View("Error", "User not found");
+            }
         }
 
-        // Method used to view the user/exercise data.
+        // Edit method: Retrieves user and associated exercises, updates premium status from session
         public IActionResult Edit(int id)
         {
-            // Retreiving the exercise and user data
             var user = context.Users.Include(u => u.Exercises).FirstOrDefault(u => u.UserID == id);
 
-            // Invalid user
             if (user == null)
             {
+                Console.WriteLine("User with ID {0} not found.", id);
                 return NotFound();
             }
+
+            // Retrieve Premium from session
+            bool Premium = true;
+            var PremiumSession = HttpContext.Session.GetString("Premium");
+            if (!string.IsNullOrEmpty(PremiumSession))
+            {
+                Premium = bool.Parse(PremiumSession);
+            }
+            Console.WriteLine("Retrieved Premium from session: {0}", Premium);
+
+            // Update the user's Premium status based on session value
+            user.Premium = Premium;
+            context.SaveChanges();
+            Console.WriteLine("User {0} premium status updated to: {1}", user.Username, Premium);
 
             // Create ViewModel used to pull data for view
             var viewModel = new ExerciseViewModel
@@ -69,9 +83,11 @@ namespace FinalProject.Controllers
                 User = user
             };
 
-            return View(viewModel); // Pass the view model to the view
-        }
+            Console.WriteLine("Passing user and exercise data to the view. Exercise count: {0}", user.Exercises.Count);
 
+            return View(viewModel);
+        }
+        
         [HttpPost]
         public IActionResult Edit(Users user)
         {
@@ -79,11 +95,15 @@ namespace FinalProject.Controllers
             {
                 context.Update(user);
                 context.SaveChanges();
+           
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            else
+            {
+                Console.WriteLine("Model state is invalid for user {0}. Errors: {1}", user.Username, ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                return View(user);
+            }
         }
+        
     }
-
-
 }

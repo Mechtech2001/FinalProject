@@ -14,7 +14,7 @@ namespace FinalProject.Models
         [Required(ErrorMessage = "Please enter the amount of reps for the exercise")]
         public int Reps { get; set; }
 
-        public ICollection<Users> Users { get; set; } 
+        public List<Users> Users { get; set; } 
 
     }
 }
