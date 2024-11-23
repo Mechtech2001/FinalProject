@@ -31,12 +31,14 @@ namespace FinalProject.Controllers
                 {
                     Console.WriteLine("Password match successful for {0}", username);
 
+                    HttpContext.Session.SetInt32("UserID", user.UserID);
+
                     // Store Premium in session
                     HttpContext.Session.SetString("Premium", Premium.ToString());
                     Console.WriteLine("Stored Premium status in session: {0}", Premium);
 
                     // Redirect to Edit page with user ID
-                    return RedirectToAction("Edit", new { id = user.UserID });
+                    return RedirectToAction("UserHome", "Exercise", new { id = user.UserID });
                 }
                 else
                 {

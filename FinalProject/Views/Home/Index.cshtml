@@ -8,13 +8,17 @@
     <form asp-action="Login" asp-controller="User" method="post" style="max-width:480px;margin:auto;">
         <h1>Welcome to our fitness app</h1>
         <h3>Please log-in</h3>
-        <input name="username" class="form-control mb-3" placeholder="Username" />
-        <input name="password" class="form-control" placeholder="Password" />
+        <input name="Username" class="form-control mb-3" placeholder="Username" />
+        <input name="Password" class="form-control" placeholder="Password" />
         <div class="mb-4">
             <label>
                 <input asp-for="Premium" name="Premium" type="checkbox" /> Do you want premium?
             </label>
         </div>
         <button type="submit" class="btn btn-primary">Log in</button>
+        <div class="text-center mt-2">
+            <a asp-controller="User" asp-action="Add" class="text-primary">Create account</a>
+        </div>
+
     </form>
 </div>  

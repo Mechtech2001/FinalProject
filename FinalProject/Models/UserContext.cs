@@ -23,17 +23,17 @@ namespace FinalProject.Models
 
             // Seed data for Exercises
             modelBuilder.Entity<Exercise>().HasData(
-                new Exercise { ExerciseID = "bench", Name = "Bench", Weight = 100, Reps = 12 },
-                new Exercise { ExerciseID = "squat", Name = "Squat", Weight = 225, Reps = 8 },
-                new Exercise { ExerciseID = "deadlift", Name = "Deadlift", Weight = 315, Reps = 6 }
+                new Exercise { ExerciseID = 1, Name = "Bench", Weight = 100, Reps = 12 },
+                new Exercise { ExerciseID = 2, Name = "Squat", Weight = 225, Reps = 8 },
+                new Exercise { ExerciseID = 3, Name = "Deadlift", Weight = 315, Reps = 6 }
             );
 
             // Seed many-to-many relationship data
             modelBuilder.Entity<User>().HasMany(u => u.Exercises).WithMany(e => e.Users)
                 .UsingEntity(j => j.HasData(
-                    new { UsersUserID = 1, ExercisesExerciseID = "bench" },
-                    new { UsersUserID = 2, ExercisesExerciseID = "squat" },
-                    new { UsersUserID = 3, ExercisesExerciseID = "deadlift" }
+                    new { UsersUserID = 1, ExercisesExerciseID = 1 },
+                    new { UsersUserID = 2, ExercisesExerciseID = 2 },
+                    new { UsersUserID = 3, ExercisesExerciseID = 3 }
                 ));
 
         }

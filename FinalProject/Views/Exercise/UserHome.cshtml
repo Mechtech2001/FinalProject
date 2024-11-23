@@ -1,0 +1,45 @@
+﻿@model ExerciseViewModel
+@{
+    var isPremium = Context.Session.GetString("Premium") == "True";
+    ViewData["Title"] = "User Home Page";
+}
+
+<div class="mb-2">
+    <a asp-controller="Exercise" asp-action="Add" class="btn btn-primary">Add New Exercise</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Exercise</th>
+            <th>Weight</th>
+            <th>Reps</th>
+            @if (isPremium)
+            {
+                <th>Body Weight</th>
+                <th>Pound For Pound Strength</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exercise in Model.Exercises)
+        {
+            <tr>
+                <td>@exercise.Name</td>
+                <td>@exercise.Weight</td>
+                <td>@exercise.Reps</td>
+                @if (isPremium)
+                {
+                    <td>@Model.User.BodyWeight</td>
+                    <td>@Model.User.P4PStrength</td>
+                }
+                <td>
+                    <a asp-controller="Exercise" asp-action="Edit"
+                       asp-route-id="@exercise.ExerciseID" class="btn btn-primary">Edit</a>
+                    <a asp-controller="Exercise" asp-action="Delete"
+                       asp-route-id="@exercise.ExerciseID" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
