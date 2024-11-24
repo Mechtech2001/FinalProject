@@ -4,8 +4,8 @@
     // Get the premium status from session
     var isPremium = Context.Session.GetString("Premium") == "True";
 
-    // View title for the edit page
-    string title = "Edit Exercises";
+    <!--The ViewBag properties allows the view to work for both Add() and Edit() actions.-->
+    string title = ViewBag.Action + " Exercise";
     ViewData["Title"] = title;
 }
 
