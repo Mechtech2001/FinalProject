@@ -41,25 +41,51 @@ namespace FinalProject.Controllers
                 else
                 {
                     Console.WriteLine("Password mismatch for Username: {0}", username);
+                    // TODO: redirect to error page.
                     return View("Error", "Invalid credentials");
                 }
             }
             else
             {
                 Console.WriteLine("User not found: {0}", username);
+                // TODO: redirect to error page.
                 return View("Error", "User not found");
             }
+        }
+
+        // Add method: Adds exercises depending on user selection
+        public IActionResult Add()
+        {
+            ViewBag.Action = "Add";
+            ViewBag.Exercises = context.Exercises.OrderBy(g => g.Name).ToList();
+            return View("Edit", new Exercise());
         }
 
         // Edit method: Retrieves user and associated exercises, updates premium status from session
         public IActionResult Edit(int id)
         {
+            // Finding user based on the ID parameter
             var user = context.Users.Include(u => u.Exercises).FirstOrDefault(u => u.UserID == id);
 
             if (user == null)
             {
                 Console.WriteLine("User with ID {0} not found.", id);
+                // TODO: redirect to error page.
                 return NotFound();
+            }
+
+            // Create ViewModel used to pull data for view
+            var viewModel = new ExerciseViewModel
+            {
+                // Initializing new Exercise for "Add"
+                Exercise = new Exercise(),
+                User = user
+            };
+
+            // If there are existing exercises, use the first one for editing
+            if (user.Exercises.Any())
+            {
+                viewModel.Exercise = user.Exercises.FirstOrDefault();
             }
 
             // Retrieve Premium from session
@@ -69,40 +95,32 @@ namespace FinalProject.Controllers
             {
                 Premium = bool.Parse(PremiumSession);
             }
-            Console.WriteLine("Retrieved Premium from session: {0}", Premium);
 
             // Update the user's Premium status based on session value
             user.Premium = Premium;
             context.SaveChanges();
-            Console.WriteLine("User {0} premium status updated to: {1}", user.Username, Premium);
-
-            // Create ViewModel used to pull data for view
-            var viewModel = new ExerciseViewModel
-            {
-                Exercise = user.Exercises.FirstOrDefault(),
-                User = user
-            };
-
-            Console.WriteLine("Passing user and exercise data to the view. Exercise count: {0}", user.Exercises.Count);
 
             return View(viewModel);
         }
         
         [HttpPost]
-        public IActionResult Edit(User user)
+        public IActionResult Edit(ExerciseViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                context.Update(user);
+                if (string.IsNullOrEmpty(viewModel.Exercise.ExerciseID)) // New Exercise
+                {
+                    context.Exercises.Add(viewModel.Exercise);
+                }
+                else // Editing existing Exercise
+                {
+                    context.Exercises.Update(viewModel.Exercise);
+                }
                 context.SaveChanges();
-           
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("View");
             }
-            else
-            {
-                Console.WriteLine("Model state is invalid for user {0}. Errors: {1}", user.Username, ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-                return View(user);
-            }
+            return View(viewModel.Exercise);
         }
         
     }
