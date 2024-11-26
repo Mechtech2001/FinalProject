@@ -14,6 +14,7 @@ namespace FinalProject.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             // Seed data for Users
             modelBuilder.Entity<User>().HasData(
                 new User { UserID = 1, Username = "tate.padilla", Password = "Test1", BodyWeight = 220, P4PStrength = 50, Premium = true },

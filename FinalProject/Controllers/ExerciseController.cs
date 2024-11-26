@@ -45,46 +45,90 @@ namespace FinalProject.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Action = "Add";
-            return View("Edit", new Exercise());
+            // Set ExerciseID to 0 for new exercises
+            var exerciseViewModel = new ExerciseViewModel()
+            {
+                Exercise = new Exercise()
+            };
+            Console.WriteLine(exerciseViewModel.Exercise.ExerciseID);
+            ViewBag.Action = "Add"; // Set action to add for view
+            return View("Edit", exerciseViewModel);
         }
 
         [HttpGet]
-        public IActionResult Edit(string exerciseId)
+        public IActionResult Edit(int id)
         {
-            ViewBag.Action = "Edit";
-            var exercise = context.Exercises.Find(exerciseId);
-            return View(exercise);
+            // Fetch the exercise from the database
+            var exercise = context.Exercises.FirstOrDefault(e => e.ExerciseID == id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new ExerciseViewModel { Exercise = exercise };
+            ViewBag.Action = "Edit"; // Set action to edit for view
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(Exercise exercise)
+        public IActionResult Edit(ExerciseViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            // Check if the model state is valid
+            if (!ModelState.IsValid)
             {
-                if (exercise.ExerciseID == 0)
-
-                    context.Exercises.Add(exercise);
-
-                else
-
-                    context.Exercises.Update(exercise);
-                context.SaveChanges();
-                return RedirectToAction("UserHome", "Exercise");
-
+                return View(viewModel); // Return to view if validation fails
             }
+
+            // If adding a new exercise (ExerciseID is null)
+            if (viewModel.Exercise.ExerciseID == null)
+            {
+                // Add the new exercise to the database
+                context.Exercises.Add(viewModel.Exercise);
+
+                // Associate exercise with the logged-in user
+                var userId = HttpContext.Session.GetInt32("UserID");
+                var user = context.Users
+                    .Include(u => u.Exercises)
+                    .FirstOrDefault(u => u.UserID == userId);
+
+                if (user != null)
+                {
+                    user.Exercises.Add(viewModel.Exercise);  // Associate the new exercise
+                }
+            }
+
             else
             {
-                ViewBag.Action = (exercise.ExerciseID == 0) ? "Add" : "Edit";
-                return View(exercise);
+                var exercise = context.Exercises.FirstOrDefault(e => e.ExerciseID == viewModel.Exercise.ExerciseID);
+
+                if (exercise == null)
+                {
+                    return NotFound();
+                }
+
+                exercise.Name = viewModel.Exercise.Name;
+                exercise.Weight = viewModel.Exercise.Weight;
+                exercise.Reps = viewModel.Exercise.Reps;
             }
+
+            // Save changes to the database
+            context.SaveChanges();
+
+            // Redirect to UserHome after saving
+            return RedirectToAction("UserHome", new { id = viewModel.User.UserID });
         }
 
         [HttpGet]
-        public IActionResult Delete(string id)
+        public IActionResult Delete(int id)
         {
 
             var exercise = context.Exercises.Find(id);
+
+            // Error if exercise does not exist
+            if (exercise == null)
+            {
+                return NotFound();
+            }
             return View(exercise);
         }
 
