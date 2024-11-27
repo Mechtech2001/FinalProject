@@ -9,7 +9,7 @@
     ViewData["Title"] = title;
 }
 
-<!DOCTYPE
+<!DOCTYPE>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,6 @@
     <form asp-action="Edit" asp-controller="Exercise" method="post">
         <!-- Hidden field for ExerciseID, only used for editing -->
         <input type="hidden" asp-for="Exercise.ExerciseID" />
-        <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="mb-3">
             <label asp-for="Exercise.Name" class="form-label">Name</label>
