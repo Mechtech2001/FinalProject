@@ -38,8 +38,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseExceptionHandler("/Error/ServerError"); // Custom error handler for exceptions
+    
+    app.UseStatusCodePagesWithReExecute("/Error/{0}"); // Re-execute requests for specific status codes
 }
 
 app.UseHttpsRedirection();
@@ -56,5 +57,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapFallbackToController("HandleStatusCode", "Error");
 
 app.Run();
