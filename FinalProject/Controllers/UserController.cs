@@ -31,7 +31,7 @@ namespace FinalProject.Controllers
             {
                 Console.WriteLine("Password mismatch for Username: {0}", username);
                 ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                return View("~/Views/Home/Index.cshtmlx"); // Redisplay login view with an error
+                return View("~/Views/Home/Index.cshtml"); // Redisplay login view with an error
             }
 
             Console.WriteLine("Password match successful for {0}", username);
