@@ -1,15 +1,16 @@
 ﻿@model User
 @{
-    ViewData["Title"] = "Login-in page";
+    ViewData["Title"] = "Log in page";
 }
 
 <div class="text-center mt-5">
     <div asp-validation-summary="All" class="text-danger"></div>
+
     <form asp-action="Login" asp-controller="User" method="post" style="max-width:480px;margin:auto;">
         <h1>Welcome to our fitness app</h1>
-        <h3>Please log-in</h3>
+        <h3>Please log in</h3>
         <input name="username" class="form-control mb-3" placeholder="Username" />
-        <input name="password" class="form-control" placeholder="Password" />
+        <input name="password" type="password" class="form-control mb-3" placeholder="Password" />
         <div class="mb-4">
             <label>
                 <input asp-for="Premium" name="Premium" type="checkbox" /> Do you want premium?
@@ -19,6 +20,5 @@
         <div class="text-center mt-2">
             <a asp-controller="User" asp-action="Add" class="text-primary">Create account</a>
         </div>
-
     </form>
-</div>  
+</div>
