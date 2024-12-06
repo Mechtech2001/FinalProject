@@ -57,4 +57,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Adding code to automatically migrate DB to Azure upon program start.
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<UserContext>();
+    context.Database.Migrate(); // Applies migrations automatically
+}
 app.Run();
