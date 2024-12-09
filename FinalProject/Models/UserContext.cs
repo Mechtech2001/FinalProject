@@ -7,9 +7,11 @@ namespace FinalProject.Models
 {
     public class UserContext : DbContext
     {
+        public UserContext() { }
+
         public UserContext(DbContextOptions<UserContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; } 
+        public virtual DbSet<User> Users { get; set; } 
         public DbSet<Exercise> Exercises { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
